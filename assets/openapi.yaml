@@ -1,0 +1,398 @@
+openapi: 3.0.0
+info:
+  title: WDH API v1.0
+  description: ''
+  x-logo:
+    url: 'https://www.wdh.fr/assets/img/logo.svg'
+    altText: 'WeDoHosting SAS Logo'
+  contact:
+    name: WeDoHosting SAS
+    email: support@wdh.fr
+    url: 'https://www.wdh.fr/'
+  version: 1.0.0
+servers:
+  - url: 'https://api.wdh.fr/'
+    description: Default server
+tags:
+- name: VPS
+  description: Everything about VPS
+paths:
+  '/manage/{id}':
+    get:
+      security:
+        - api_key: []
+      summary: Getting the current VPS status and informations
+      tags: 
+        - VPS
+      description: 'VPS: Get status'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Service ID.
+          schema:
+            type: string
+            example: ''
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    type:
+                      type: string
+                      example: success
+                    status:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: ok
+                    data:
+                      type: array
+                      example:
+                        status: stopped
+                        serviceId: 52
+                        virt: proxmox
+                        vmid: 130
+                        ipaddresses: 5.XX.XX.XX
+                        hostname: example.wdh.fr
+                        osname: Debian-11-Bullseye-amd64
+                        oses:
+                          templates: {}
+                        cpus: 6
+                        cpu: 0
+                        mem: 0
+                        maxmem: 17181966336
+                        netout: 0
+                        netin: 0
+                        maxdisk: 1288490188800
+                        disk: 0
+        '400':
+          description: On error
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    status:
+                      type: boolean
+                      example: false
+                    message:
+                      type: string
+                      example: Authentication is required.
+  '/manage/{id}/start':
+    post:
+      security:
+        - api_key: []
+      summary: Start VPS Server
+      tags: 
+        - VPS
+      description: 'VPS: Start'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Service ID.
+          schema:
+            type: string
+            example: ''
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    status:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: The VPS has been successfully started.
+        '400':
+          description: On error
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    status:
+                      type: boolean
+                      example: false
+                    message:
+                      type: string
+                      example: Authentication is required.
+  '/manage/{id}/stop':
+    post:
+      security:
+        - api_key: []
+      summary: Stop VPS Server
+      tags: 
+        - VPS
+      description: 'VPS: Stop'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Service ID.
+          schema:
+            type: string
+            example: ''
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    status:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: The VPS has been successfully stopped.
+        '400':
+          description: On error
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    status:
+                      type: boolean
+                      example: false
+                    message:
+                      type: string
+                      example: Authentication is required.
+  '/manage/{id}/restart':
+    post:
+      security:
+        - api_key: []
+      summary: Restart VPS Server
+      tags: 
+        - VPS
+      description: 'VPS: Restart'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Service ID.
+          schema:
+            type: string
+            example: ''
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    status:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: The VPS has been successfully started.
+        '400':
+          description: On error
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    status:
+                      type: boolean
+                      example: false
+                    message:
+                      type: string
+                      example: Authentication is required.
+  '/manage/{id}/rebuild':
+    get:
+      security:
+        - api_key: []
+      summary: Getting available OS templates
+      tags: 
+        - VPS
+      description: 'VPS: Reinstall'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Service ID.
+          schema:
+            type: string
+            example: ''
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    status:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: ok
+                    data:
+                      type: array
+                      example:
+                        - oses:
+                          - templates:
+                            - "Debian-11-Bullseye-amd64"
+                            - "Debian-10-Buster-amd64"
+                            - "Ubuntu-23.04-Lunar-amd64"
+                            applications:
+                            - templates:
+                              - "pterodactyl"
+        '400':
+          description: On error
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    status:
+                      type: boolean
+                      example: false
+                    message:
+                      type: string
+                      example: Authentication is required.
+    post:
+      security:
+        - api_key: []
+      summary: Reinstall VPS Operating System
+      tags: 
+        - VPS
+      description: 'Reinstalling your VPS in a new operating system, using "template" name.'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Service ID.
+          schema:
+            type: string
+            example: ''
+        - in: query
+          name: template
+          required: true
+          description: New template to use for VPS reinstallation
+          schema:
+            type: string
+            example: 'CentOS-7-Buster-amd64'
+        - in: query
+          name: password
+          required: true
+          description: New "root" password for Linux, or "Administrator" password for Windows.
+          schema:
+            type: string
+            example: '2GcLDG8s7dID'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    status:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: ok
+        '400':
+          description: On error
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    status:
+                      type: boolean
+                      example: false
+                    message:
+                      type: string
+                      example: Couldn't find the selected operating system.
+
+  '/manage/{id}/password':
+    post:
+      security:
+        - api_key: []
+      summary: Reset VPS password
+      tags: 
+        - VPS
+      description: 'Setting a new "root" password for Linux, or "Administrator" password for Windows. VPS will be restarted to apply change.'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Service ID.
+          schema:
+            type: string
+            example: ''
+        - in: query
+          name: password
+          required: true
+          description: New "root" password for Linux, or "Administrator" password for Windows.
+          schema:
+            type: string
+            example: '2GcLDG8s7dID'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    status:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: Password has beeen succesfuly updated.
+        '400':
+          description: On error
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    status:
+                      type: boolean
+                      example: false
+                    message:
+                      type: string
+                      example: Authentication is required.
+  
+components:
+  securitySchemes:
+    api_key:
+      description: >
+        In header: "Authorization: Basic api_key"
+      type: apiKey
+      name: Authorization
+      in: header
