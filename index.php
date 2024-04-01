@@ -1,7 +1,5 @@
 <?php
-
 include 'config.php';
-
 
 function getVPSInfo($apiKey, $serviceId) {
     $url = "https://api.wdh.fr/manage/" . $serviceId;
@@ -41,6 +39,48 @@ $vpsInfo = getVPSInfo($apiKey, $serviceId);
     <title>Hébergeur VPS, Sites web &amp; Gaming (Minecraft, MCPE) - WeDoHosting</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/Css/style.css">
+
+    <style>
+        /* Style du popup */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 9999;
+        }
+
+        .popup h2 {
+            margin-top: 0;
+        }
+
+        .popup input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .popup button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .popup button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
 
@@ -62,14 +102,15 @@ $vpsInfo = getVPSInfo($apiKey, $serviceId);
                     <a class="nav-link" href="restart_vps.php">Redémarrer le VPS</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="openResetPasswordPopup()">Changer le password</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="/">Actualiser les informations</a>
                 </li>
-
             </ul>
         </div>
     </div>
 </nav>
-
 
 <div class="container mt-5">
     <h1 class="mb-4">Gestion du VPS</h1>
@@ -90,12 +131,27 @@ $vpsInfo = getVPSInfo($apiKey, $serviceId);
         <li class="list-group-item">Taille maximale du disque: <?php echo $vpsInfo['data']['maxdisk']; ?></li>
         <li class="list-group-item">Utilisation du disque: <?php echo $vpsInfo['data']['disk']; ?></li>
     </ul>
-    
 </div>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<div class="popup" id="resetPasswordPopup">
+    <h2>Réinitialiser le mot de passe</h2>
+    <form method="post" action="reset_password.php">
+        <label for="password">Nouveau mot de passe :</label>
+        <input type="password" id="password" name="password" required>
+        <button type="submit">Réinitialiser</button>
+    </form>
+    <button onclick="closeResetPasswordPopup()">Fermer</button>
+</div>
+
+<script>
+    function openResetPasswordPopup() {
+        document.getElementById('resetPasswordPopup').style.display = 'block';
+    }
+
+    function closeResetPasswordPopup() {
+        document.getElementById('resetPasswordPopup').style.display = 'none';
+    }
+</script>
 
 </body>
 </html>
